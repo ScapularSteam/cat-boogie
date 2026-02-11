@@ -1,0 +1,171 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import BaseHead from "../../components/BaseHead.astro";
+import Footer from "../../components/Footer.astro";
+import Header from "../../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
+
+const posts = (await getCollection("overview"))
+  .filter((post) => post.id !== "credits")
+  .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body class="pattern-dots">
+    <Header />
+    <main
+      class="page-container"
+      style="padding-top: 2rem; padding-bottom: 4rem;"
+    >
+      <section>
+        <h1 class="text-center mb-8">Workshops</h1>
+        <p
+          class="text-center mb-8"
+          style="max-width: 800px; margin-left: auto; margin-right: auto;"
+        >
+          Check back here in a few weeks to see workshops made during Project
+          YSWS! Want to make a workshop of your own? Check out the overview for
+          more details!
+        </p>
+
+        <h4
+          class="text-center mb-8"
+          style="max-width: 800px; margin-left: auto; margin-right: auto;"
+        >
+          Example Workshops
+        </h4>
+        <p
+          class="text-center mb-8"
+          style="max-width: 800px; margin-left: auto; margin-right: auto;"
+        >
+          Looking for some inspiration? Why not check out Club Friendly YSWSs
+          for some ideas!
+        </p>
+        <div class="grid-2">
+          {
+            posts.map((post) => (
+              <a href={`/overview/${post.id}/`} class="card post-card-link">
+                {post.data.heroImage && (
+                  <div class="image-container">
+                    <Image
+                      width={720}
+                      height={360}
+                      src={post.data.heroImage}
+                      alt=""
+                    />
+                  </div>
+                )}
+                <div class="card-content">
+                  <h3 class="title">{post.data.title}</h3>
+                  <p class="description">{post.data.description}</p>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+
+        <h4
+          class="text-center mb-8"
+          style="max-width: 800px; margin-left: auto; margin-right: auto;"
+        >
+          Project YSWS Submissions
+        </h4>
+        <p
+          class="text-center mb-8"
+          style="max-width: 800px; margin-left: auto; margin-right: auto;"
+        >
+          Check back in a few weeks to see the workshops made for Project YSWS!
+        </p>
+
+        <div class="grid-2">
+          {
+            posts.map((post) => (
+              <a href={`/overview/${post.id}/`} class="card post-card-link">
+                {post.data.heroImage && (
+                  <div class="image-container">
+                    <Image
+                      width={720}
+                      height={360}
+                      src={post.data.heroImage}
+                      alt=""
+                    />
+                  </div>
+                )}
+                <div class="card-content">
+                  <h3 class="title">{post.data.title}</h3>
+                  <p class="description">{post.data.description}</p>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .post-card-link {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  .post-card-link:hover {
+    transform: translateY(-4px);
+    text-decoration: none;
+  }
+
+  .post-card-link:hover .title {
+    color: var(--accent);
+  }
+
+  .image-container {
+    width: 100%;
+    aspect-ratio: 2/1;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .post-card-link:hover .image-container img {
+    transform: scale(1.05);
+  }
+
+  .card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .title {
+    margin: 0;
+    font-size: 1.5rem;
+    transition: color 0.2s;
+  }
+
+  .description {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+</style>
