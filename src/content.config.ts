@@ -16,4 +16,21 @@ const overview = defineCollection({
 		}),
 });
 
+const workshops = defineCollection({
+	// Load Markdown and MDX files in the `src/content/overview/` directory.
+	loader: glob({ base: './src/content/overview', pattern: '**/*.{md,mdx}' }),
+	// Type-check frontmatter using a schema
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			description: z.string(),
+			authorName: z.string(),
+			authorPfp: z.string(),
+			// Transform string to Date object
+			pubDate: z.coerce.date(),
+			updatedDate: z.coerce.date().optional(),
+			heroImage: image().optional(),
+		}),
+});
+
 export const collections = { overview };
